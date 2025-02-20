@@ -23,7 +23,9 @@ app.use("/hello",(res,res)=>{
 
  // all the route matching over here because order matter 
 // this other never got a chance to execute
-app.use("/user",(req,res)=>{
+app.use("/user",
+   // this is basically controller , route handaler
+   (req,res)=>{
    res.send("HAHAHAHAHA");
 })
 
@@ -41,6 +43,16 @@ app.get("/user",(req,res)=>{
 })
 
 /*----------------*/
+
+// three ways we can get the data this is how you read the query parameters
+// req.query , 
+// req.query => localhost:3000/user?user=123&page=1 
+/*
+   what if you want to make route dynamic
+   req.params:localhost:3000/user/123 how do you handle this dynamic api
+*/
+// send the data
+// req.body
 
 app.listen(PORT,()=>console.log(`Server Is Running On PORT ${PORT}...`));
 
