@@ -1,0 +1,9 @@
+app.use("/test", // route
+    // this function is know as request hander
+    (req,res)=>{
+        res.send("hello from the server")
+    }
+)
+
+// git intialiaze
+// git init
