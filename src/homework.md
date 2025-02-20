@@ -9,4 +9,15 @@
  - What are dependancies
  - What is the use of "-g" while npm install
  - Difference betwwen caret and tilde (^ vs ~)
- - 
+ 
+ - initialize git
+ - gitignore 
+ - Create a remove repo on github
+ - Push all code to remote origin
+ 
+ - Play with routes and route extensions ex. /hello , / , hello/2 , /xyz
+ - Sequence of Order of the routes matter a lot 
+ 
+- Install Postman app and make a workspace/collection > test API call
+
+- Write logic to handle GET,POST,PATCH,DELETe API Calls and test them on Postman
