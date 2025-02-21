@@ -379,3 +379,69 @@ app.use("/user12",
             res.send("5nd Response!!");
         }
         )
+
+ /*
+   and you can also send array of object and it will works exactly the same
+   exactly the same gotted and now you can also mix and match 
+ */
+
+   app.use("/user12",
+    [(req,res,next)=>{
+     console.log("Handler the route user!!");
+     next();
+    },
+    (req,res,next) => {
+        console.log("Handling the route user 2!!");
+       // res.send("2nd Response!!");
+       next();
+    },
+    (req,res,next) => {
+        console.log("Handling the route user 3!!");
+        //res.send("3nd Response!!");
+        next();
+    },
+    (req,res,next) => {
+        console.log("Handling the route user 4!!");
+        //res.send("4nd Response!!");
+        next();
+    },
+    (req,res,next) => {
+        console.log("Handling the route user 5!!");
+        res.send("5nd Response!!");
+    }]
+    )
+
+// it will again behaviour the same
+    app.use("/user13",
+        [(req,res,next)=>{
+         console.log("Handler the route user!!");
+         next();
+        },
+        (req,res,next) => {
+            console.log("Handling the route user 2!!");
+           // res.send("2nd Response!!");
+           next();
+        }],
+        (req,res,next) => {
+            console.log("Handling the route user 3!!");
+            //res.send("3nd Response!!");
+            next();
+        },
+        (req,res,next) => {
+            console.log("Handling the route user 4!!");
+            //res.send("4nd Response!!");
+            next();
+        },
+        (req,res,next) => {
+            console.log("Handling the route user 5!!");
+            res.send("5nd Response!!");
+        }
+        )
+    /* this is what i wanted to show you how you can add multiple route handlers
+    how you can add multiple route handler function over here in this app.use
+    you can not just use you can just used it inside app.get and you can used inside post,patch,put,delete
+    anywhere this will work right 
+    all of the methods all of this function all will work the same why with this route handler gotted
+    now this is what i wanted to tell you
+     
+    */
