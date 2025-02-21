@@ -443,5 +443,78 @@ app.use("/user12",
     anywhere this will work right 
     all of the methods all of this function all will work the same why with this route handler gotted
     now this is what i wanted to tell you
-
     */
+
+    /* 
+     one way of defining a route handler is you don't pass second argument over here
+     but you can also pass in like this right 
+     and this is the independent route handler if i make an Api call it's goes to the 
+     2nd Route Handler why how it will work ? it will work exactly the same way my dear friends
+     the sequence of this function matter a lot
+    */
+
+     app.get("/user",(req,res,next) => {
+        console.log("Handling the route user!!");
+        next();
+     })
+     app.get("/user",(req,res,next)=>{
+        console.log("Handling the route user 2!!");
+        res.send("2nd Route Handler")
+     })
+
+    /* 
+    What if i change the order can you guess the output now ? 
+    what if i change the order ? what will happen now tell me my dear friends
+    what will happen now now you already know that ok this order matters over here
+    first of fall it will go over here and it will go and print console log 
+    and it will go print res.send right when the res.send 2nd Route Handler will be return right
+    the postman will get the response 2nd route handler essented
+    But will it go to this route are not ? will it print this console are not
+    will this next funtion call or not ? and if next() is call 
+    will it throw and error or not? or will it throw and error to postman ?
+    what will happen ?
+    */
+    app.get("/user",(req,res,next)=>{
+        console.log("Handling the route user 2!!");
+        res.send("2nd Route Handler")
+     })
+    app.get("/user",(req,res,next) => {
+        console.log("Handling the route user!!");
+        next();
+     })
+   /*
+      let me hit send this response back and if i go back over here see what will you see 
+      how it work was see user came in over here console log happen right
+      and then the response was send over here and the second route handler
+      was not even called right it does not matter because see
+      it's not even going to the next() one
+      But what if  i send next over here again this i have already discuss
+      you should know the answer this   
+      what will happen now ?
+   */
+    app.get("/user",(req,res,next)=>{
+        console.log("Handling the route user 2!!");
+       // res.send("2nd Route Handler")
+       next()
+     })
+    app.get("/user",(req,res,next) => {
+        console.log("Handling the route user!!");
+        next();
+    })
+
+     /*
+       it will give an error on postman see i have call the next() over here
+       and there is no next route handler it's expecting one more route handler
+       if i don't call it next() over here 
+       what will happen ?
+       it will go to the infinate loop see this gotted so this is how it work
+     */
+    app.get("/user",(req,res,next)=>{
+        console.log("Handling the route user 2!!");
+       // res.send("2nd Route Handler")
+       next()
+     })
+    app.get("/user",(req,res,next) => {
+        console.log("Handling the route user!!");
+       // next();
+     })
