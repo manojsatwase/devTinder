@@ -7,6 +7,7 @@ const PORT = 3000;
 // basic fundamental to your head 
 // that order of writting the code order of writting the route matter a lot ok 
 app.use("/hello/2",(res,res)=>{
+   // Route Handler
    res.send("Abracadabra");
 })
 
@@ -49,7 +50,7 @@ app.get("/user",(req,res)=>{
 // req.query => localhost:3000/user?user=123&page=1 
 /*
    what if you want to make route dynamic
-   req.params:localhost:3000/user/123 how do you handle this dynamic api
+   req.params:localhost:3000/user/123 how do you handle this dynamic api 
 */
 // send the data
 // req.body
