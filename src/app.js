@@ -5,12 +5,14 @@ const User = require('./models/user');
 
 const PORT = 3000;
 
+// are middleware will now be activeted for all the routes
 app.use(express.json());
+
 // post api
 app.post('/signup',async (req,res)=>{
     // Creating a new instance of the User model
+    const user = new User(req.body);
     try {
-        const user = new User(req.body);
         // once i do user.save() because this is an instance of model
         // and you call a dot save on top of it so this data save on to that db
         // and this function basically return a promise so most of the time you have to use promise
@@ -23,9 +25,14 @@ app.post('/signup',async (req,res)=>{
     }
 })
 
-app.get("users",async())
-
-
+app.get('/users',async (req,res)=>{
+   try{
+    const users = await User.find({});
+    res.status(200).json(users);
+   }catch(err){
+    res.status(400).send("Error saving the user:" + err.message);
+   }
+})
   // connectDB() function call it will return a promise 
   // and then happy case and the bad case also over here
   // this is the proper way to connect database in your application
