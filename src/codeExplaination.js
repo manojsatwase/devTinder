@@ -518,3 +518,68 @@ app.use("/user12",
         console.log("Handling the route user!!");
        // next();
      })
+
+    // why express js make this next() function ? do we realy need it
+    /*
+    the answer to this is middlewares
+    */
+
+    // GET /users => It checks all the app.xxx("matching route") functions
+    
+    app.use("/",(req,res,next)=>{
+        res.send("Handling / route");
+    })
+
+    app.get("/user",(req,res,next)=>{
+        console.log("Handling /user route");
+        next();
+    },
+    (req,res,next) => {
+        next();
+    },
+    (req,res,next) => {
+        res.send("2nd Route Handler");
+    }
+)
+// it will be print Handling / route not go forther
+// if i put next over here so what will happen now ?
+app.use("/",(req,res,next)=>{
+   // res.send("Handling / route");
+   next()
+})
+
+app.get("/user",
+// you can assume this also as middlewares
+(req,res,next)=>{
+    console.log("Handling /user route");
+    next();
+},
+// you can assume this also as middleware
+(req,res,next) => {
+    next();
+},
+// this is actually a request Handler because it's actually sending the data back
+(req,res,next) => {
+    res.send("2nd Route Handler");
+}
+)
+/*
+if i go and send the response i will go the second route handler and console log will also be printed
+because 
+ GET /users => It checks all the app.xxx("matching route") functions right
+ with the matching route and go one by one and execute one by one still it get the response back to the server
+ it will keep on going one by one one by one 
+ basically whenever a request comes to expressjs server the job of expressjs server is to go one by one one by one
+and goes from the top to bottom to all the handlers to all the app right function and try to response back right 
+if it does not find a matching url if does not be able to send the response back it's just HANGS UP right 
+thats how express work right it checks all the function and it send the response back if any of them sending response back
+it will go no forther thats how express work
+whenever you make an api call it basically goes to the middleware chain
+ and finally it goes to the request handler and i'm calling a request handler 
+ the function which actually is sending the response back because it actually handling the response 
+ you know this is just a lingo there is no concept of middleware or route handler this are the thinks
+ made by us the developers to convence the message but according to express this are just funtion and we call this function as
+ middleware because this are the call in the middle of the request change or method change right
+ this are kind of like change method and express call this one after another
+ main job of server to response back to the user and this is the main job of nodejs gotted
+*/
