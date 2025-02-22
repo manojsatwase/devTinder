@@ -19,10 +19,11 @@ app.post('/signup',async (req,res)=>{
        res.send("User Added successfully!");
         
     } catch (error) {
-      console.log(error);
+      res.status(400).send("Error saving the user:" + err.message);
     }
 })
 
+app.get("users",async())
 
 
   // connectDB() function call it will return a promise 
