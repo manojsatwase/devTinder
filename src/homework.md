@@ -44,5 +44,6 @@
 - Call the connectDB function and connect to dababase before starting application on 3000 
 
 - Create a userSchema & user Model
-- Create /signup API to add data to database
+- Create POST /signup API to add data to database
 - Push some documents using API calls from postman
+- Error Handling using try , catch
