@@ -56,3 +56,4 @@
 - API - Feed API - GET /feed - get all the users from the database
 - API - Get user by ID using findById();
 - Create a delete user API
+- Difference between PATCH and PUT

@@ -21,7 +21,7 @@ app.post('/signup',async (req,res)=>{
        // res.status(201).json(user);
        res.status(200).send("User Added successfully!");
         
-    } catch (error) {
+    } catch (err) {
       res.status(400).send("Error saving the user:" + err.message);
     }
 })
@@ -49,7 +49,7 @@ app.get('/user', async (req, res) => {
     }
 });
 
-
+// DELETE USER from the database
 app.delete('/user',async(req,res)=>{
   try {
     const userId = await User.findByIdAndDelete(req.body.userId);
@@ -62,6 +62,23 @@ app.delete('/user',async(req,res)=>{
     res.status(400).send("Something went wrong");
   }
 })
+
+// Update data of the user
+app.patch("/user",async (req,res) =>{
+    const userId = req.body.userId;
+    const data = req.body;
+    try {
+        // partiallly update & it's not present fileds in the schema
+        // it will not be added into database. any other data which is apart from the schema
+        // will be ignore by your APIs
+        //await User.findByIdAndUpdate(userId,data)
+        await User.findByIdAndUpdate({_id:userId},data,{returnDocument:"before"})
+        res.send("User updated successfully");
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+    }
+})
+
 
 // Feed API - GET /feed - get all the users from the database
 app.get('/feed',async (req,res)=>{
