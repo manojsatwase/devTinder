@@ -57,3 +57,14 @@
 - API - Get user by ID using findById();
 - Create a delete user API
 - Difference between PATCH and PUT
+- API - Update a user
+- Explore the Mongoose Documentation for Model Methods
+- What are options in a Model.findOneAndUpdate method, explore more about it
+- API - Update the user with email ID
+
+- Explore schematype options from the documentation
+- add required, unique, lowercase, min, minLength, trim
+- Add default
+- Create a custom validate function for gender
+- Improve the DB schema - PUY all appropriate validations on each field in Schema
+- Add timestamps to the userSchema 

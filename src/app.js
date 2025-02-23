@@ -72,10 +72,10 @@ app.patch("/user",async (req,res) =>{
         // it will not be added into database. any other data which is apart from the schema
         // will be ignore by your APIs
         //await User.findByIdAndUpdate(userId,data)
-        await User.findByIdAndUpdate({_id:userId},data,{returnDocument:"before"})
+        await User.findByIdAndUpdate({_id:userId},data,{returnDocument:"before",runValidators:true})
         res.send("User updated successfully");
     } catch (error) {
-        res.status(400).send("Something went wrong");
+        res.status(400).send("UPDATE FAILED:" + error.message);
     }
 })
 
