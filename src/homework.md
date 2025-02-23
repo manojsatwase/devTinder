@@ -54,3 +54,5 @@
 - if we are doing User.findOne with duplicate email ids , which object will be returned
 - API - Get user by email
 - API - Feed API - GET /feed - get all the users from the database
+- API - Get user by ID using findById();
+- Create a delete user API
