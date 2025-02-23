@@ -18,19 +18,44 @@ app.post('/signup',async (req,res)=>{
         // and this function basically return a promise so most of the time you have to use promise
         await user.save();
        // res.status(201).json(user);
-       res.send("User Added successfully!");
+       res.status(200).send("User Added successfully!");
         
     } catch (error) {
       res.status(400).send("Error saving the user:" + err.message);
     }
 })
 
-app.get('/users',async (req,res)=>{
+// Get user by email
+app.get('/user', async (req, res) => {
+    const userEmail = req.body.emailId;
+    try {
+        // it will be return one document older 
+        const user = await User.findOne({ emailId: userEmail });
+        // If no user is found, return a 404 response
+        if (user.length === 0) {
+            // if you do this 
+            //return res.status(404).send("User not found");
+            // or if you don't use return keyword then used need to use if and else
+            res.status(404).send("User not found");
+        }else{
+        // If the user is found, send the user data with a 200 status
+        res.status(200).send(user);
+        }
+
+    } catch (err) {
+        // If there's an error, send a 400 response
+        res.status(400).send("Something went wrong");
+    }
+});
+
+
+// Feed API - GET /feed - get all the users from the database
+app.get('/feed',async (req,res)=>{
    try{
     const users = await User.find({});
     res.status(200).json(users);
    }catch(err){
-    res.status(400).send("Error saving the user:" + err.message);
+    res.status(400).send("Something went wrong");
    }
 })
   // connectDB() function call it will return a promise 
