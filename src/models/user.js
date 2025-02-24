@@ -6,10 +6,12 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         minLength:3,
-        maxLength:50
+        maxLength:50,
+        trim: true   
     },
     lastName:{
         type:String,
+        trim: true
     },
     emailId:{
         type:String,
@@ -20,7 +22,8 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        minLength: 8
     },
     age:{
         type:Number,
@@ -50,7 +53,8 @@ const userSchema = new mongoose.Schema({
         type:String
     },
    skills:{
-    type:[String]
+    type:[String],
+    default: []
    }, 
 },{
   // mongodb createdAt and updatedAt for every user that register on to are platform

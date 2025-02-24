@@ -64,10 +64,36 @@ app.delete('/user',async(req,res)=>{
 })
 
 // Update data of the user
-app.patch("/user",async (req,res) =>{
-    const userId = req.body.userId;
+app.patch("/user/:userId",async (req,res) =>{
+    // and its a good think to keep this question mark over here ok so that if the userId is not present your code will not fail  
+    const userId = req.params?.userId;
     const data = req.body;
+    // we should validate all the fileds never trust on users or attackrs can attackyour API 
+    // send the malisis data and your db can break
+    /* you know sometime when we are building the ui we just feel that ok user will used UI 
+      always have backend validation but NO attackers wiill missused your APIs
+      your backend is very velunarable you can never leave your backend less secure right
+      may be you don't have UI validation that is ok but always have backend validation 
+      for each and every fileds your data should be 100% secure and this is know as DATA SANITIZATION
+    */
+     
     try {
+         // server level validation
+        const ALLOEWD_UPDATES = ["photoUrl","about","gender","age","skills"];
+        
+        // Object.keys(data) this return array of keys
+        // if all of the data whatever i'm passing in every key if present then return true otherwise false
+        const isUpdateAllowed = Object.keys(data).every(key=>ALLOEWD_UPDATES.includes(key));
+        
+        if(!isUpdateAllowed){
+           throw new Error("Updated not allowed");
+        }
+        
+        if (data?.skills.length > 10) {
+            throw new Error("skills cannot be more than 10");
+        }
+
+
         // partiallly update & it's not present fileds in the schema
         // it will not be added into database. any other data which is apart from the schema
         // will be ignore by your APIs
