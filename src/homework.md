@@ -72,3 +72,4 @@
 - DATA Scenotazation add API validation for each fileds
 - Install validator
 - Explore the validator library function and Use validator function for password, email, photoUrl
+- NEVER TRUST req.body

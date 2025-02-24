@@ -147,3 +147,11 @@ app.get("/user",async(req,res)=>{
 */
 
 
+/*
+ if you are a good coder you should be validating everything 
+ you can cannot trust anything thats comes from this req.body
+ always make sure your PATCH, your PUT, your POST APIs 
+ whenever you are getting some data never trust this req.body 
+ never in your life trust req.body right this req.body can get any milicious into your database
+ you never have to trust req.body ok
+*/
