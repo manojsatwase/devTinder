@@ -89,10 +89,9 @@ app.patch("/user/:userId",async (req,res) =>{
            throw new Error("Updated not allowed");
         }
         
-        if (data?.skills.length > 10) {
+        if (data?.skills?.length > 10) {
             throw new Error("skills cannot be more than 10");
         }
-
 
         // partiallly update & it's not present fileds in the schema
         // it will not be added into database. any other data which is apart from the schema
