@@ -35,6 +35,17 @@ const userSchema = new mongoose.Schema({
                 throw new Error("Enter a Strong Password:" + value);
             }
         }
+        /*
+        we store are password in plain text over here right we can read it
+        but are password should not be store into are database there are a lot of security issue
+        if you store password like this becase this password are readble i can read it
+        so the password should be store in a HASH Format 
+        password should be store in a Encypted Format and nobody should be able to see the in the database
+        suppose in the signup api when the user is registering on to the platform
+        when there is calling signup api and if there is given the password manoj@123
+        the password store in the database should not be manoj@123 it should be HASH of the password
+        ENCRYPTED PASSWORD SHOULD BE STORE INTO THAT DATABSE
+        */
     },
     age:{
         type:Number,
