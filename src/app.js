@@ -4,11 +4,15 @@ const app = express();
 const User = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const PORT = 3000;
 
 // are middleware will now be activeted for all the routes
 app.use(express.json());
+// whenever any request will come my cookie will be parse and i can now access those cookie ok
+app.use(cookieParser());
 
 // post api
 app.post("/signup", async (req, res) => {
@@ -63,35 +67,75 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     // first of fall it validate emailId and password isCurrect or Not
-    const {emailId, password } = req.body;
-    // emailId validation 
+    const { emailId, password } = req.body;
+    // emailId validation
 
-    // suppose if somebody login random emailId this emailId is not in my database 
+    // suppose if somebody login random emailId this emailId is not in my database
     // so first of fall i will check whether this user is present in my database or not
     // if the user is present in my database then i will check wether the password is currect or not ok
     // so How would you check ? for that i will try to find out the user
-    const user = await User.findOne({emailId}); 
-    if(!user){
-        //throw new Error("EmailID is not present in DB");
-        throw new Error("Invalid credentials");
-    } 
+    const user = await User.findOne({ emailId });
+    if (!user) {
+      //throw new Error("EmailID is not present in DB");
+      throw new Error("Invalid credentials");
+    }
 
-    // main logic 
+    // main logic
     // we check wether the email id and password is currect
     // how do you check it ?
     //  there is function bcrypt.compare('plain text passowrd','db store password') this return you boolean
     // and it will again a return a promise
-    const isPasswordValid = await bcrypt.compare(password,user.password)
-    if(!isPasswordValid){
-       //throw new Error("Password is not currect");
-       throw new Error("Invalid credentials");
-    }else{
-        res.send("Login Successfull!!!");
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      //throw new Error("Password is not currect");
+      throw new Error("Invalid credentials");
+    } else {
+      // Create a JWT Token then what will we do
+      // i can basically Hide same data over here sign
+      // when i'm creating a token i can Hide same data
+      // what i will Hide over is ? i will Hide the user Id
+      // and i will also gove a screte key over
+      // here this secrete key basically a password that only i know
+      // But this secreate key is a password that only server know user don't no it
+      // attacker don't know it nobody know this password only the server know this passowrd ok
+      // so i'm Hiding this data and i'm also giving a secreate key this secreate key is very very important ok
+      // when the user is coming in the emailId and Password if the emailId and Password is currect
+      // creating a token hiding the userID insided and sending the back to the user right
+      // hiding the userId back sending it back to the user and client
+      // Now this token also has a secreate information about who is login right
+      // and userId is hidden in this token. a user Id of manoj is hidden inside this token
+      const token = await jwt.sign({ _id: user._id }, "SecreateKey@$143");
+
+      // Add the token to cookie and send the response back to the user
+      // see everytime you login it will create a new token but userId is Hidden over here
+      // cookie only be set when my emailId and password is currect for manoj satwase then the cookie will be set
+      // and then the i will be access to the profile and only my profile and i will possible because of jwt
+      res.cookie("token", token);
+      res.send("Login Successfull!!!");
     }
-     
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }
+});
+
+app.get("/profile", async (req, res) => {
+ try {
+     // validate my cookie
+  const { token } = req.cookies;
+  if(!token){
+    throw new Error("Invalid Token");
+  }
+  // Basically i was storing the id over here when i login this is i will get back
+  const decodedMessage = await jwt.verify(token,"SecreateKey@$143");
+  const {_id} = decodedMessage;
+  const user = await User.findById(_id);
+  if(!user){
+     throw new Error("User does not exist");
+  }
+  res.send(user);
+ } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+ }
 });
 
 // Get user by email
