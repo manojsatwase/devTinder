@@ -86,3 +86,19 @@
 - install jsonwebtoken
 - // IN login API, after email and password validation create a JWT token and sent it to user back inside cookie
 - read the cookie inside your profile API and find the logged in user
+- userAuth Middleware
+- Add the userAuth middleware in profile and a new sendConnectionRequest API
+- Set the expiry of JWT token and cookies to  7 days
+- Create userSchema method to getJWT()
+- Create UserSchema method to comparepassword(passwordInputByUser)
+- your variable should not be random variable the code that you write that computer to understand or human to understand ?
+- the code that you write is human to understand humans not the computer so always be clear when you write
+- your code should be readable and now a lot of peaple say that we write code so that computer can understand No computer can understand binary also but that does not means we will write binary because we can't write binary because it's not human readable we are working with js with the high level languages we are working with nodejs express framework just because it's became easier for us coputer can maching it can understand like random thinks you give it to us but this code is for human to understand ok when human is understand you should always be clear what name you put in right no matter how long your valiable.
+
+- Explore tinder APIs
+- Create a list all API you can think of in Dev Tinder
+- Group multiple route under respective router
+- Read documentation for express.Router
+- Create routes folder for managing auth,profile,request routers
+- create authRouter, profileRouter,requestRouter
+- Import these routers in app.js

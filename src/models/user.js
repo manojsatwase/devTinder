@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // create a userSchema 
 const userSchema = new mongoose.Schema({
@@ -88,5 +90,31 @@ const userSchema = new mongoose.Schema({
   // by default it will added you don't have to add extra thinks
   timestamps:true
 })
+
+userSchema.methods.getJWT = async function (){
+   // whenever you create a instance of model so basically all this documents right
+   // this manoj ,  this deepika, all of this are instances of this user module essented 
+   // when i refere to this over here it will represent that perticular instance
+   const user = this; 
+   const token = await jwt.sign({ _id: user._id }, "SecreateKey@$143", {
+        expiresIn: "7d",
+     });
+     return token;
+}
+
+userSchema.methods.validatePassword = async function(passwordInputByUser) {
+   const user = this;
+   const passwordHash = user.password;
+   //bcrypt.compare('comming from the request which the user enter','this.password')
+   const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash);
+   return isPasswordValid;
+}
+
 // we create mongoose model this model is created own instances
 module.exports = mongoose.model("User",userSchema);
+
+// this is the userSchema that we created now what is this userSchema ?
+// this user Schema basically defined the user so what i can do is
+// i can attach few methods on to this schema that is applicable for all the user
+// what are this methods ?
+// this methods are helper methods that is very closely related to user   
