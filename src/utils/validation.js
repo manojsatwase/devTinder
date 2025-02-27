@@ -20,39 +20,46 @@ const validateSignUpData = (req) => {
 };
 
 const validateEditProfileData = (req) => {
-  const { emailId, photoUrl,about,skills } = req.body;
+  const { emailId, photoUrl, about, skills } = req.body;
   const allowedEditFields = [
     "firstName",
     "lastName",
-    "emailId",
     "photoUrl",
     "gender",
     "age",
     "about",
     "skills",
   ];
- 
+
   const isEditAllowed = Object.keys(req.body).every((filed) =>
     allowedEditFields.includes(filed)
   );
 
-  if (!validator.isEmail(emailId)) {
-    throw new Error(`Invalid email address: ${emailId}`);
-  }
   if (!validator.isURL(photoUrl)) {
     throw new Error(`Invalid Photo URL address: ${photoUrl}`);
   }
-  if(about?.length > 250){
+  if (about?.length > 250) {
     throw new Error("About should not be more than 250 character long");
-  } 
-  if(skills?.length > 10){
-    throw new Error("Skills should not be more than 10")
   }
-  
+  if (skills?.length > 10) {
+    throw new Error("Skills should not be more than 10");
+  }
+
   return isEditAllowed;
+};
+
+const validateForgetPassword = (req) => {
+  const { newPassword } = req.body;
+  if (!newPassword) {
+    throw new Error("Password should not Empty!!!");
+  }
+  if (!validator.isStrongPassword(newPassword)) {
+    throw new Error("Enter a Strong Password:" + newPassword);
+  }
 };
 
 module.exports = {
   validateSignUpData,
   validateEditProfileData,
+  validateForgetPassword,
 };

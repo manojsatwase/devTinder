@@ -110,6 +110,11 @@ userSchema.methods.validatePassword = async function(passwordInputByUser) {
    return isPasswordValid;
 }
 
+userSchema.methods.getPasswordHash = async function(password){
+    const passwordHash =  await bcrypt.hash(password, 10);
+    return passwordHash;
+}
+
 // we create mongoose model this model is created own instances
 module.exports = mongoose.model("User",userSchema);
 
