@@ -1,4 +1,5 @@
 const validator = require("validator");
+const mongoose = require("mongoose");
 
 const validateSignUpData = (req) => {
   /*
@@ -58,8 +59,23 @@ const validateForgetPassword = (req) => {
   }
 };
 
+const isValidStatus = (status) => {
+  const allowedStatus = ["interested","ignored"];
+  if(!allowedStatus.includes(status)){
+    throw new Error(`${status} Invalid status type`);
+  }
+}
+
+// Utility function to validate user ID
+const isValidUserId = (userId) =>{
+  // Basic check if userId is a valid ObjectId
+  return mongoose.Types.ObjectId.isValid(userId);
+}
+
 module.exports = {
   validateSignUpData,
   validateEditProfileData,
   validateForgetPassword,
+  isValidStatus,
+  isValidUserId
 };

@@ -4,6 +4,6 @@ const { userAuth } = require('../middlewares/auth');
 
 const requestRouter = express();
 
-requestRouter.route("/sendConnectionRequest").post(userAuth,sendConnectionRequest);
+requestRouter.route("/request/send/:status/:toUserId").post(userAuth,sendConnectionRequest);
 
 module.exports = requestRouter;

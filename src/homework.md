@@ -106,3 +106,18 @@
 - Create PATCH /profile/edit
 - Create PATCH /profile/password API => forgot password API
 - Make sure you validate all data in every POST,PATCH apis
+
+- Create Connection Request Schema
+- Send Connection Request API
+- Proper validation of Data
+- Think about ALL corner cases
+- $or query or $and query in mongoose 
+- Schema.pre("save") function
+- 
+- Read more abouted indexes in MongoDB
+- why do we need index in DB ?
+- What is the advantage and disadvantage of creating ?
+- Read this articale about compound indexs: https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
+- Logical Query Operators : https://www.mongodb.com/docs/v6.0/reference/operator/query-comparison/
+- Logical Query : https://www.mongodb.com/docs/v6.0/reference/operator/query-logical/
+- Lession Is : ALWAYS THINK ABOUT CORBER CASES : ans always think that you leave a corner case and attacker can attack that corner case and can missup your database ok always think about corner cases right because any attacker will not leave your APIs if anybody get your API then can just pass anythink random to it right
