@@ -24,8 +24,8 @@ this review request api for the reciever side
 - /request/review/:status/:userId
 
 ## userRouter
-- GET /user/connections
 - GET /user/requests/received
+- GET /user/connections
 - GET /user/feed - Gets you profile of other users on platform
 
 - Status:Right swap : ignore(tinder call it as pass),left swap : interested(tinder call it as like),accepted,rejected
@@ -53,3 +53,6 @@ this review request api for the reciever side
 - and data is very very important thinks right in today is world data leak can be very dangers and that happen because some developers right have give the opportunity to access the data illegally right and attacker can missused that opportunity right
 - so Thought process is very different always make sure in the get APIs you are very sure about what you are sending back to the user ok now when we write this APIs you will understand it properly 
 - while writting GET APIs i will also tell you one more important concept right inside Mongoose and you will love it rigth it's basically kind of making relation between to collection right we will make a relation an a Reference between two collection we will see it very soon But lets us just start writting are APIS ok
+- 
+- Read about ref and populate: https://mongoosejs.com/docs/populate.html
+- Create GET /user/requests/received with all the checks

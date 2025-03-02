@@ -15,12 +15,14 @@ app.use(cookieParser());
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
 
 // slash means it will run for all the routes
 // first of fall it will check for slash profile route inside auth router
 app.use("/",authRouter);
 app.use("/",profileRouter);
 app.use("/",requestRouter);
+app.use("/",userRouter);
 
 // connectDB() function call it will return a promise
 // and then happy case and the bad case also over here

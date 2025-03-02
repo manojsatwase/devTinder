@@ -1,4 +1,5 @@
 const express = require('express');
+
 const { sendConnectionRequest, receiverConnectionRequest } = require('../controllers/requestsController');
 const { userAuth } = require('../middlewares/auth');
 
