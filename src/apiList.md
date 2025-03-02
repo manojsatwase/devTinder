@@ -25,7 +25,7 @@ this review request api for the reciever side
 
 ## userRouter
 - GET /user/requests/received
-- GET /user/connections
+- GET /user/connections // give the informaton who is connected to me who is basically my connection who is accepted my request right
 - GET /user/feed - Gets you profile of other users on platform
 
 - Status:Right swap : ignore(tinder call it as pass),left swap : interested(tinder call it as like),accepted,rejected
@@ -56,3 +56,5 @@ this review request api for the reciever side
 - 
 - Read about ref and populate: https://mongoosejs.com/docs/populate.html
 - Create GET /user/requests/received with all the checks
+- 
+- Create GET /user/connections
