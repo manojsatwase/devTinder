@@ -3,7 +3,7 @@ const { validateEditProfileData,validateForgetPassword } = require("../utils/val
 exports.profile = async (req, res) => {
   try {
     const user = req.user;
-    res.send(user);
+    res.json({data:user});
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }
@@ -56,7 +56,7 @@ exports.forgetPassword = async (req, res) => {
     await req.user.save();
     
     // Respond to the client
-    res.send('Password updated successfully!');
+    res.json({message:'Password updated successfully!'});
     
   } catch (err) {
     res.status(400).send(`Error: ${err.message}`);

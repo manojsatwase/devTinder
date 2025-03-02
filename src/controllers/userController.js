@@ -1,6 +1,7 @@
+const User = require("../models/user");
 const ConnectionRequest = require("../models/connectionRequest");
 
-const USER_SAFE_DATA =  "firstName lastName photoUrl age gender about skills";
+const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
 
 // Get all the pending connection request for the loggedIn user
 exports.pendingConnectionRequest = async (req, res) => {
@@ -30,10 +31,7 @@ exports.pendingConnectionRequest = async (req, res) => {
       toUserId: loggedInUser._id,
       status: "interested",
       // from the reference    over here i will pass the list of data need from that right
-    }).populate(
-      "fromUserId",
-      USER_SAFE_DATA
-    );
+    }).populate("fromUserId", USER_SAFE_DATA);
     //}).populate("fromUserId",["firstName","lastName"]) // ["firstName","lastName"] this kind of like a filter this is one way of writting it
 
     res.status(200).json({
@@ -52,16 +50,15 @@ exports.connectionsController = async (req, res) => {
     // Manoj sends a connection request to Deepika, and Deepika accepts the connection.
     // Deepika sends a connection request to Atul, and Atul accepts the connection.
 
-  // Query for accepted connection requests where the logged-in user is either the sender or the receiver
-  const connectionRequests = await ConnectionRequest.find({
-    $or: [
-      { toUserId: loggedInUser._id, status: "accepted" },  // Where user is the receiver
-      { fromUserId: loggedInUser._id, status: "accepted" },  // Where user is the sender
-    ],
-  }).populate(
-      "fromUserId",
-      USER_SAFE_DATA
-    ).populate("toUserId",USER_SAFE_DATA);
+    // Query for accepted connection requests where the logged-in user is either the sender or the receiver
+    const connectionRequests = await ConnectionRequest.find({
+      $or: [
+        { toUserId: loggedInUser._id, status: "accepted" }, // Where user is the receiver
+        { fromUserId: loggedInUser._id, status: "accepted" }, // Where user is the sender
+      ],
+    })
+      .populate("fromUserId", USER_SAFE_DATA)
+      .populate("toUserId", USER_SAFE_DATA);
 
     // Check if there are any accepted connection requests
     if (!connectionRequests || connectionRequests.length === 0) {
@@ -70,14 +67,14 @@ exports.connectionsController = async (req, res) => {
         data: [],
       });
     }
-    
-   // modify the data accordingly
-   const data = connectionRequests.map(row=>{
-    if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
-      return row.toUserId;
-    }
-    return row.fromUserId;
-   });
+
+    // modify the data accordingly
+    const data = connectionRequests.map((row) => {
+      if (row.fromUserId._id.toString() === loggedInUser._id.toString()) {
+        return row.toUserId;
+      }
+      return row.fromUserId;
+    });
     // Return the connection requests with the success message and count
     res.status(200).json({
       message: "Data fetched successfully",
@@ -86,6 +83,62 @@ exports.connectionsController = async (req, res) => {
     });
   } catch (err) {
     res.status(400).send({
+      message: err.message,
+    });
+  }
+};
+
+exports.feedController = async (req, res) => {
+  try {
+    // user should see all the cards except
+    // 0. his own card
+    // 1. his connections
+    // 2. ignore people
+    // 3. already sent the connectin request
+
+    // Example : suppose Rahul is a new user ,Akshay, Elon, Mark, Donald, MS Dhoni, Virat
+    // Rahul = [Akshay, Elon, Mark, Donald, MS Dhoni, Virat];
+    // R -> Akshay->Rejected , R->Elon->Accepted => [Mark, Donald, MS Dhoni, Virat]
+
+    const loggedInUser = req.user;
+ 
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 50 : limit;
+    const skip = (page - 1) * limit;
+  
+    // Find all connection requests (sent + receiived)
+    const connectionRequests = await ConnectionRequest.find({
+      // so i will find all the connection request where other i have send or i have received
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    }).select("fromUserId toUserId");
+
+    const hideUsersFromFeed = new Set();
+    connectionRequests.forEach((req) => {
+      hideUsersFromFeed.add(req.fromUserId.toString());
+      hideUsersFromFeed.add(req.toUserId.toString());
+    });
+
+    const users = await User.find({
+      $and: [
+        {
+          // Hide id is not in this array
+          // this  Array.from(hideUsersFromFeed) function convert set into array
+          _id: { $nin: Array.from(hideUsersFromFeed) },
+          // ne => not equal
+        },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      data: users
+    });
+  } catch (err) {
+    res.status(400).json({
       message: err.message,
     });
   }

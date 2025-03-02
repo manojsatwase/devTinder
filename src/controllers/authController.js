@@ -46,7 +46,7 @@ exports.signup = async (req, res) => {
     // and this function basically return a promise so most of the time you have to use promise
     await user.save(); // save this data into are dabase
     // res.status(201).json(user);
-    res.status(200).send("User Added successfully!");
+    res.status(200).json({ message: "User Added successfully!" });
   } catch (err) {
     res.status(400).send("ERROR:" + err.message);
   }
@@ -109,7 +109,7 @@ exports.login = async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 7 * 24 * 3600000),
       });
-      res.send("Login Successfull!!!");
+      res.json({ message: "Login Successfull!!!" });
     }
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
@@ -121,7 +121,7 @@ exports.logout = async (req, res) => {
     res.cookie("token", null, {
       expires: new Date(Date.now()),
     });
-    res.send("Logout Successfully");
+    res.json({ message: "Logout Successfully" });
   } catch (err) {
     res.status(400).send(`Error: ${err.message}`);
   }
