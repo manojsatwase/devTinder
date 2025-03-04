@@ -109,7 +109,10 @@ exports.login = async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 7 * 24 * 3600000),
       });
-      res.json({ message: "Login Successfull!!!" });
+      res.json({
+        message: "Login Successfull!!!" ,
+        user
+      });
     }
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);

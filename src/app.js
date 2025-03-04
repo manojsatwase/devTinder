@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const connectDB = require("./config/database");
 const app = express();
@@ -7,11 +8,17 @@ const app = express();
 const PORT = 3000;
 
 // are middleware will now be activeted for all the routes
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 // whenever any request will come my cookie will be parse and i can now access those cookie ok
 app.use(cookieParser());
 
-// Routes 
+// Routes
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
@@ -19,10 +26,10 @@ const userRouter = require("./routes/user");
 
 // slash means it will run for all the routes
 // first of fall it will check for slash profile route inside auth router
-app.use("/",authRouter);
-app.use("/",profileRouter);
-app.use("/",requestRouter);
-app.use("/",userRouter);
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
 
 // connectDB() function call it will return a promise
 // and then happy case and the bad case also over here
