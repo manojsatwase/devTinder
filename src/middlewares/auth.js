@@ -6,7 +6,8 @@ const userAuth = async (req, res, next) => {
     // the job of this middleware is to Read the token from the req.cookies
     const { token } = req.cookies;
     if(!token){
-      throw new Error("Token is not valid!!!");
+      // throw new Error("Token is not valid!!!");
+      return res.status(401).send("Please Login!");
     }
     // Validate the token
     // Basically i was storing the id over here when i login this is i will get back

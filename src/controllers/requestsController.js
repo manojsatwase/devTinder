@@ -110,11 +110,11 @@ exports.receiverConnectionRequest = async (req, res) => {
     }
   
     const connectionRequest = await ConnectionRequest.findOne({
-      //_id: requestId, // sender id who is interested
+      _id: requestId, // sender id who is interested
       toUserId: loggedInUser._id, // from user id is me
       status: "interested",
     });
- 
+   console.log()
     if (!connectionRequest) {
       return res.status(404).json({
         message: "Connection request not found",

@@ -9,12 +9,13 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         minLength:3,
-        maxLength:50,
+        maxLength:20,
         trim: true   
     },
     lastName:{
         type:String,
-        trim: true
+        trim: true,
+        maxLength:20
     },
     emailId:{
         type:String,
@@ -52,6 +53,7 @@ const userSchema = new mongoose.Schema({
     age:{
         type:Number,
         min:18,
+        max:100,
         required:true,
     },
     gender:{
@@ -86,7 +88,8 @@ const userSchema = new mongoose.Schema({
         }
     },
     about:{
-        type:String
+        type:String,
+        default: "This is default about of the user"
     },
    skills:{
     type:[String],

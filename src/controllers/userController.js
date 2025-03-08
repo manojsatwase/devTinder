@@ -31,9 +31,9 @@ exports.pendingConnectionRequest = async (req, res) => {
       toUserId: loggedInUser._id,
       status: "interested",
       // from the reference    over here i will pass the list of data need from that right
-    }).populate("fromUserId", USER_SAFE_DATA);
+    }).populate("fromUserId", USER_SAFE_DATA)
     //}).populate("fromUserId",["firstName","lastName"]) // ["firstName","lastName"] this kind of like a filter this is one way of writting it
-
+  
     res.status(200).json({
       message: "data fetched successfully",
       data: connectionRequest,
@@ -46,7 +46,7 @@ exports.pendingConnectionRequest = async (req, res) => {
 exports.connectionsController = async (req, res) => {
   try {
     const loggedInUser = req.user;
-
+  
     // Manoj sends a connection request to Deepika, and Deepika accepts the connection.
     // Deepika sends a connection request to Atul, and Atul accepts the connection.
 
@@ -78,7 +78,7 @@ exports.connectionsController = async (req, res) => {
     // Return the connection requests with the success message and count
     res.status(200).json({
       message: "Data fetched successfully",
-      data,
+      users:data,
       total: data.length,
     });
   } catch (err) {
@@ -135,7 +135,7 @@ exports.feedController = async (req, res) => {
       .limit(limit);
 
     res.json({
-      data: users
+     users
     });
   } catch (err) {
     res.status(400).json({
