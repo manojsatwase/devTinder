@@ -44,9 +44,13 @@ exports.signup = async (req, res) => {
     // once i do user.save() because this is an instance of model
     // and you call a dot save on top of it so this data save on to that db
     // and this function basically return a promise so most of the time you have to use promise
-    await user.save(); // save this data into are dabase
+    const saveUser = await user.save(); // save this data into are dabase
+    const token = await saveUser.getJWT();
     // res.status(201).json(user);
-    res.status(200).json({ message: "User Added successfully!" });
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 7 * 24 * 3600000),
+    });
+    res.status(201).json({ message: "User Added successfully!" ,user:saveUser});
   } catch (err) {
     res.status(400).send("ERROR:" + err.message);
   }

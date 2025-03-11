@@ -1,11 +1,14 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-
 const connectDB = require("./config/database");
 const app = express();
 
-const PORT = 3000;
+require("dotenv").config();
+require("./utils/cronjob");
+
+
+const PORT = process.env.PORT;
 
 // are middleware will now be activeted for all the routes
 app.use(

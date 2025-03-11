@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
   try {
@@ -11,7 +11,7 @@ const userAuth = async (req, res, next) => {
     }
     // Validate the token
     // Basically i was storing the id over here when i login this is i will get back
-    const decodedObj = await jwt.verify(token,"SecreateKey@$143");
+    const decodedObj = await jwt.verify(token,process.env.JWT_SECRET);
     
     const {_id} = decodedObj;
     // Find the user 
