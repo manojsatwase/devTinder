@@ -53,7 +53,9 @@ exports.PaymentCreateController = async (req, res) => {
 
 exports.paymentVerification = async (req, res) => {
   try {
+    console.log("Webhook Called");
     const webhookSignature = req.get("X-Razorpay-Signature");
+    console.log("Webhook Signature", webhookSignature);
 
     const isWebhookValid = validateWebhookSignature(
       JSON.stringify(req.body),
@@ -62,10 +64,12 @@ exports.paymentVerification = async (req, res) => {
     );
 
     if (!isWebhookValid) {
+      console.log("INvalid Webhook Signature");
       return res.status(400).json({
         message: "Webhook signiture is invalid",
       });
     }
+    console.log("Valid Webhook Signature");
 
     // Update my payment Status in DB
     const paymentDetails = req.body.payload.payment.entity;
@@ -76,12 +80,14 @@ exports.paymentVerification = async (req, res) => {
 
     payment.status = paymentDetails.status;
     await payment.save();
+    console.log("Payment saved");
 
-    const user = await User.find({_id:payment.userId});
-    user.isPremium = true; 
+    const user = await User.find({ _id: payment.userId });
+    user.isPremium = true;
     user.membershipType = payment.notes.membershipType;
 
     await user.save();
+    console.log("User saved");
 
     // Update the user as premium
 
@@ -95,6 +101,22 @@ exports.paymentVerification = async (req, res) => {
     return res.status(200).json({
       message: "Webhook received successfully",
     });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+exports.premiumUserVerify = async (req, res) => {
+  try {
+    const user = req.user.toJSON();
+    if (user.isPremium) {
+      return res.json({
+        isPremium: true,
+      });
+    }
+    return res.json({ isPremium: false });
   } catch (err) {
     res.status(500).json({
       message: err.message,
