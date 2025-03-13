@@ -7,7 +7,6 @@ const app = express();
 require("dotenv").config();
 require("./utils/cronjob");
 
-
 const PORT = process.env.PORT;
 
 // are middleware will now be activeted for all the routes
@@ -26,6 +25,7 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
 
 // slash means it will run for all the routes
 // first of fall it will check for slash profile route inside auth router
@@ -33,6 +33,7 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/",paymentRouter);
 
 // connectDB() function call it will return a promise
 // and then happy case and the bad case also over here
