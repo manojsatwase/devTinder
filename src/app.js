@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const connectDB = require("./config/database");
 const app = express();
+const http = require("http");
 
 require("dotenv").config();
 require("./utils/cronjob");
@@ -26,6 +27,8 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const intializeSocket = require("./utils/socket");
+const chatRoute = require("./routes/chat");
 
 // slash means it will run for all the routes
 // first of fall it will check for slash profile route inside auth router
@@ -34,6 +37,12 @@ app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/",paymentRouter);
+app.use("/",chatRoute);
+
+// this app is the express application
+const server = http.createServer(app);
+intializeSocket(server);
+
 
 // connectDB() function call it will return a promise
 // and then happy case and the bad case also over here
@@ -45,7 +54,7 @@ app.use("/",paymentRouter);
 connectDB()
   .then(() => {
     console.log("Database connection established...");
-    app.listen(PORT, () => console.log(`Server Is Running On PORT ${PORT}...`));
+    server.listen(PORT, () => console.log(`Server Is Running On PORT ${PORT}...`));
   })
   .catch((err) => {
     console.error("Database cannot be connected!!");
